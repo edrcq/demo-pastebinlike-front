@@ -54,6 +54,7 @@ const store = new Vuex.Store({
 
     async createPaste(context, paste) {
       const { data } = await axios.post('/new-paste', paste)
+      context.dispatch('getLatests')
       return data
     }
   },

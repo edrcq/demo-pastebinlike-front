@@ -42,6 +42,9 @@ export default {
             if (res.error) {
                 swal({ title: 'Cannot create paste', text: res.error })
             }
+            else {
+                this.$router.push(`/p/${res.slug}`)
+            }
         }
     }
 }
