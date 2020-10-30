@@ -1,18 +1,26 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Bienvenue sur PastebinLike</h1>
+    <div class="row">
+      <div class="col-12 col-md-8">
+        <create-paste />
+      </div>
+      <div class="col-12 col-md-4">
+        <latest-pastes />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import LatestPastes from '@/components/LatestPastes'
+import CreatePaste from '@/components/CreatePaste'
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld
+    LatestPastes,
+    CreatePaste,
   }
 }
 </script>
