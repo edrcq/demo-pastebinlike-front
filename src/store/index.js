@@ -15,7 +15,7 @@ const store = new Vuex.Store({
     lastBySlug: {
       title: '',
       content: '',
-      createdAt: '',
+      createdAt: new Date(),
       owner: {
         name: ''
       }
@@ -36,12 +36,13 @@ const store = new Vuex.Store({
 
     getLatests({ commit }) {
       axios.get('/latest-pastes')
-        .then(({ data }) => {
+        .then((res) => {
+          const data = res.data
           console.log(data)
           commit('latests', data.pastes)
         })
         .catch(err => {
-          swal({ title: 'Error occured', text: 'Cannot fetch latest-pastes', icon: 'danger' })
+          swal({ title: 'Error occured', text: 'Cannot fetch latest-pastes', icon: 'error' })
           console.error(err)
         })
     },
@@ -56,6 +57,40 @@ const store = new Vuex.Store({
       const { data } = await axios.post('/new-paste', paste)
       context.dispatch('getLatests')
       return data
+    },
+
+    async login({ commit }, { email, password }) {
+      const { data } = await axios.post('/login', {
+        email, password
+      })
+
+      if (!data.error) {
+        axios.defaults.headers.common['Authorization'] = data.authToken;
+        return true
+      }
+      return false
+
+
+
+    },
+
+    async signup({ dispatch, commit }, { email, password, pseudo }) {
+
+      try {
+        const { data } = await axios.post('/signup', {
+          email, password, pseudo
+        })
+
+        if (!data.error) {
+          return dispatch('login', { email, password })
+        }
+        swal({ title: 'Signup error', text: data.error })
+      }
+      catch (err) {
+        swal({ title: 'Signup FATAL error', text: err.message })
+        console.error(err)
+      }
+
     }
   },
   modules: {
